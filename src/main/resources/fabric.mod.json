@@ -21,7 +21,7 @@
   ],
   "entrypoints": {
     "client": [
-      "com.maxmilite.bunnyhop.BunnyHop"
+      "com.maxmilite.quicksender.QuickSender"
     ]
   },
   "depends": {
