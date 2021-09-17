@@ -26,7 +26,7 @@ import net.minecraft.text.*;
 
 public class QuickSender implements ClientModInitializer {
     public int keyCount = 10;
-    public Map<String, String> keyList = new HashMap<>() {
+    public static Map<String, String> keyList = new Map<>() {
         {
             put("1", "Hello World!");
             put("2", "Hello World!");
@@ -125,91 +125,7 @@ public class QuickSender implements ClientModInitializer {
             e.printStackTrace();
         }
         readConfig();
-        CommandDispatcher<ServerCommandSource> dispatcher = new CommandDispatcher<>();
-            dispatcher.register(
-                    literal("quicksender")
-                            .then(literal("set")
-                                    .then(argument("Number", integer())
-                                            .then(argument("Command", string())
-                                                    .executes(c -> {
-                                                        int cur = getInteger(c, "Number");
-                                                        if (cur > keyCount || cur <= 0) {
-                                                            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(new LiteralText(
-                                                                    "\u00a7e[\u00a7bQuickSender\u00a7e]\u00a7r \u00a7b 选择的指令数超出现有的指令个数或不合法"));
-                                                            return -1;
-                                                        } else {
-                                                            ClientTickEvents.END_CLIENT_TICK.register(client -> {
-                                                                while (List.get(cur - 1).wasPressed()) {
-                                                                    client.player.sendChatMessage(getString(c, "Command").replaceAll("\"", ""));
-                                                                }
-                                                            });
-                                                            keyList.put(String.valueOf(cur), getString(c, "Command").replaceAll("\"", ""));
-                                                            try {
-                                                                writeConfig();
-                                                            } catch(IOException e) {
-                                                                e.printStackTrace();
-                                                            }
-                                                            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(new LiteralText(
-                                                                    "\u00a7e[\u00a7bQuickSender\u00a7e]\u00a7r \u00a7e 以下快捷指令已添加完毕: \n" +
-                                                                            "\u00a7a第 " + String.valueOf(getInteger(c, "Number")) + " 条快捷指令 -> " + getString(c, "Command")
-                                                            ));
-                                                        }
-                                                        return 1;
-                                                    })
-                                            )
-                                    )
-                            )
-//                            .then(CommandManager.literal("count")
-//                                    .then(CommandManager.argument("Number", integer())
-//                                            .executes(c -> {
-//                                                int cnt = getInteger(c, "Number");
-//                                                if (cnt >= keyCount) {
-//                                                    for (int i = keyCount + 1; i <= cnt; ++i)
-//                                                        List.add(KeyBindingHelper.registerKeyBinding(new KeyBinding(
-//                                                                "快捷按键 " + String.valueOf(i),
-//                                                                InputUtil.Type.KEYSYM,
-//                                                                GLFW.GLFW_KEY_UNKNOWN,
-//                                                                "快捷指令"
-//                                                        )));
-//                                                } else {
-//                                                    for (int i = keyCount; i > cnt; --i) {
-//                                                        List.remove(i - 1);
-//                                                    }
-//                                                }
-//                                                keyCount = cnt;
-//                                                try {
-//                                                    writeConfig();
-//                                                } catch(IOException e) {
-//                                                    e.printStackTrace();
-//                                                }
-//                                                MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(new LiteralText(
-//                                                        "\u00a7e[\u00a7bQuickSender\u00a7e]\u00a7r \u00a7e 快捷指令条数已设置为: \u00a7a" +
-//                                                                String.valueOf(cnt)));
-//                                                return 1;
-//                                            })
-//                                    )
-//                            )
-                            .then(literal("help")
-                                    .executes(c -> {
-                                        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(new LiteralText(
-                                                        "\u00a7e[\u00a7bQuickSender\u00a7e]\u00a7r \u00a7e 使用帮助 \n" +
-                                                                "\u00a7e1. /quicksender set <数字> \"<指令>\" \n \u00a7e设置某一快捷命令为某指令 \n" +
-                                                                "\u00a7e例: /quicksender set 1 \"/home\" 设置第一条命令为 \u00a7a/home"
-                                                )
-                                        );
-                                        return 1;
-                                    })
-                            )
-                            .executes(c -> {
-                                MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(new LiteralText(
-                                                "\u00a7e[\u00a7bQuickSender\u00a7e]\u00a7r \u00a7e 使用帮助 \n" +
-                                                        "\u00a7e1. /quicksender set <数字> \"<指令>\"\n\u00a7e设置某一快捷命令为某指令\n" +
-                                                        "\u00a7e例: /quicksender set 1 \"/home\" 设置第一条命令为\u00a7a/home"
-                                        )
-                                );
-                                return 1;
-                            })
-            );
+        
         System.out.println("哇这里竟然有彩蛋");
     }
 }

@@ -3,5 +3,6 @@
   "key.qslite.homekey": "快速输入 /home",
   "key.qslite.backkey": "快速输入 /back",
   "key.qslite.dbackkey": "快速输入 /dback",
-  "key.qslite.spawnkey": "快速输入 /spawn"
+  "key.qslite.spawnkey": "快速输入 /spawn",
+  "text.qs.configscreen": "QuickSender 设置界面"
 }
